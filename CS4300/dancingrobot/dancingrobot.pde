@@ -1,6 +1,6 @@
-// A Dancing T-Rex
 // Alex Johnson 9/9/14
-// CS 4300
+// CS 4300 - Computer Graphics
+// A Dancing T-Rex
 
 int centerX = 400;
 int centerY = 200;
@@ -8,40 +8,29 @@ int centerY = 200;
 int windowWidth = 800;
 int windowHeight = 400;
 
-int i = 0;
-int mod = 1;
-
 // Initialize program
 void setup (){
-
+  
   // Set size of preview window
   size(windowWidth, windowHeight);
-  textFont(createFont("Georgia", 36));
+  
+  // Set default text options
+  textFont(createFont("Georgia", 24));
 }
 
 // Render
 void draw (){
   background(0, 255, 255);
+  debugInfo();
   
-  // Window Info
-  textSize(32);
-  fill(0, 102, 153);
-  
-  text(mouseX, 10, 30); 
-  text(mouseY, 110, 30);
-  text(i, 210, 30);
-  
-  // Count up and down
-  if (i >= 100){
-     mod = -1;
-  } else if (i <= 0){
-    mod = 1;
-  }
-  
-  i = i + (2 * mod);
+  float x = mouseY / (float)windowHeight * 100; 
 
+  // Create new Dino
   Dino trex = new Dino(260, 200);
-  trex.display(i);
+  
+  // Render dino, providing a number indicating it's
+  // current position in a dance
+  trex.display(x);
   
 }
 
@@ -81,14 +70,14 @@ class Dino {
     tail1.display();
     
     // TAIL 2
-    float[] a4 = {80, 250 + i * .3};
-    float[] b4 = {70, 250 + i * .3};
+    float[] a4 = {80, 250 + i * -.8};
+    float[] b4 = {70, 250 + i * -.8};
     Quad tail2 = new Quad(a4, b4, b3, a3);
     tail2.display();
     
     // HEAD
     float[] c5 = {440, 250 + i };
-    float[] d5 = {420, 210 + i };
+    float[] d5 = {440 + i * -.1, 210 + i };
     Quad head = new Quad(d2, c2, c5, d5);
     head.display();
     
@@ -107,9 +96,10 @@ class Dino {
   }
 }
 
-// Defined a quadrilateral shape,
-// given 4 arrays (2-key positions)
-// counter clockwise from top left
+// Represents a quadrilateral polygon.
+// Quad takes 4 arrays, each representing a coordinate,
+// and connect those coordinates with lines,  counter 
+// clockwise starting with the top left vertex.
 class Quad {
   float ax, ay, bx, by, cx, cy, dx, dy;
   
@@ -124,6 +114,7 @@ class Quad {
     dy = d[1];    
   }
   
+  // Draw lines connecting the 4 vertices
   void display() {
     beginShape();
     vertex(ax, ay);
@@ -134,9 +125,19 @@ class Quad {
   }
 }
 
-// Helper
+// Print the Selected coordinates when the mouse is clicked.
 void mouseClicked(){
   println("{" + mouseX + ", " + mouseY + "}");
+}
+
+void debugInfo(){
+    // Window Info
+  textSize(32);
+  fill(0, 102, 153);
+  
+  text(mouseX, 10, 30); 
+  text(mouseY, 110, 30);
+  text(i, 210, 30);
 }
 
 
