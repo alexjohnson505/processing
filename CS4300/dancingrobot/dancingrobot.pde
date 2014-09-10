@@ -99,9 +99,9 @@ class Dino {
     jaw.display();
     
     // ARM
-    float[] c6 = {347, 332};
-    float[] d6 = {347, 332};
-    Quad arm = new Quad(c2, d2, c6, d6);
+    float[] c7 = {347, 332};
+    float[] d7 = {347, 332};
+    Quad arm = new Quad(c2, d2, c7, d7);
     arm.display();
     
   }
