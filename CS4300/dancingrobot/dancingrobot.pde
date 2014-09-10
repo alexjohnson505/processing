@@ -2,75 +2,98 @@
 // Alex Johnson 9/9/14
 // CS 4300
 
+int centerX = 400;
+int centerY = 200;
+
+double dinoCenterX = 260;
+double dinoCenterY = 220;
+
 int windowWidth = 800;
 int windowHeight = 400;
 
-int centerX = 400;
-int centerY = 200;
-  
-// Count
-int x = 0;
-  
+int i = 0;
+int mod = 1;
+
 // Initialize program
 void setup (){
+
   // Set size of preview window
   size(windowWidth, windowHeight);
-  
-//  Pos a = new Pos(10,12);
-//  print(a.x);
+  textFont(createFont("Georgia", 36));
 }
 
 // Render
 void draw (){
   background(0, 255, 255);
   
-//  rect(mouseX / 2, mouseY /2, 200, 80);
-   
+  // Window Info
   textSize(32);
   fill(0, 102, 153);
-  
   text(mouseX, 10, 30); 
   text(mouseY, 100, 30);
+  text(i,      160, 30);
   
-//  Pos a = new Pos(20, 20);
-//  Pos b = new Pos(85, 20);
-//  Pos c = new Pos(85, 75);
-//  Pos d = new Pos(30, 75);
+  if (i >= 100){
+     mod = -1;
+  } else if (i <= 0){
+    mod = 1;
+  }
+  
+  i = i + (2 * mod);
 
-  
-//  Pos a = new Pos(20, 20);
-//  Pos b = new Pos(85, 20);
-//  Pos c = new Pos(85, 75);
-//  Pos d = new Pos(30, 75);
-//  
-//  Quad r = new Quad(a, b, c, d);
-//  r.display();
+//  float scaleX = windowWidth / mouseX + 1;
+//  float scaleY = windowHeight / mouseY + 1;
+
+  // BODY CONSTRUCTION
+  // FEET
+  float[] a = {240, 240 + i};
+  float[] b = {240, 360};
+  float[] c = {310, 360};
+  float[] d = {280, 240 + i};
+  Quad feet = new Quad(a, b, c, d);
+  feet.display();
+      
+  // BODY
+  float[] a2 = {214, 199};
+  float[] b2 = {217, 275};
+  float[] c2 = {365, 244};
+  float[] d2 = {345, 196};
+  Quad body = new Quad(a2, b2, c2, d2);
+  body.display();  
 }
 
 // Defined a quadrilateral shape,
-// given 4 Pos (vertices).
-//class Quad {
-//  Pos a;
-//  Pos b;
-//  Pos c;
-//  Pos d;
-//  
-//  Quad(Pos a, Pos b, Pos c, Pos d){
-//    a = a;
-//    b = b;
-//    c = c;
-//    d = d;
-//  }
-//  
-//  void display() {
-//    beginShape();
-//    vertex(a.x, a.y);
-//    vertex(85, 20);
-//    vertex(85, 75);
-//    vertex(30, 75);
-//    endShape(CLOSE);
-//  }
-//}
+// given 4 arrays (2-key positions)
+// counter clockwise from top left
+class Quad {
+  float ax, ay, bx, by, cx, cy, dx, dy;
+  
+  Quad(float[] a, float[] b, float[] c, float[] d){
+    ax = a[0];
+    ay = a[1];
+    bx = b[0];
+    by = b[1];
+    cx = c[0];
+    cy = c[1];
+    dx = d[0];
+    dy = d[1];    
+  }
+  
+  void display() {
+    beginShape();
+    vertex(ax, ay);
+    vertex(bx, by);
+    vertex(cx, cy);
+    vertex(dx, dy);
+    endShape(CLOSE);
+  }
+}
+
+// Helper
+void mouseClicked(){
+  println("{" + mouseX + ", " + mouseY + "}");
+}
+
 
 // Position in a coordinate plane.
 // Contains an X and a Y value
@@ -86,10 +109,8 @@ void draw (){
 //    print("a.x called");
 //    return x++;
 //  };
-//  
-//
 //}
-//
-//
+
+
 
 
