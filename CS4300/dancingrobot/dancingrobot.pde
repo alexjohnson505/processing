@@ -23,6 +23,10 @@ void draw (){
   background(0, 255, 255);
   debugInfo();
   
+  // Convert the Y position of the user's cursor 
+  // into a corresponding value between 0 and 100;
+  // This number represents the percentage of height
+  // to animate the Dino at.
   float x = mouseY / (float)windowHeight * 100; 
 
   // Create new Dino
