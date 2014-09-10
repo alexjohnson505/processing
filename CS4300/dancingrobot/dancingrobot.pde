@@ -16,6 +16,7 @@ void setup (){
   
   // Set default text options
   textFont(createFont("Georgia", 24));
+  
 }
 
 // Render
@@ -60,43 +61,42 @@ class Dino {
     feet.display();
 
     // BODY
-    float[] a2 = {214, 199 + i};
-    float[] b2 = {217 + i * -.3, 275 + i};
-    float[] c2 = {365 + i * -.2, 244 + i * 1.4};
-    float[] d2 = {345, 196 + i * 1.4};
-    Quad body = new Quad(a2, b2, c2, d2);
+    a = new float[] {214, 199 + i};
+    b = new float[] {217 + i * -.3, 275 + i};
+    c = new float[] {365 + i * -.2, 244 + i * 1.4};
+    d = new float[] {345, 196 + i * 1.4};
+    Quad body = new Quad(a, b, c, d);
     body.display();
     
     // TAIL 1
-    float[] a3 = {125, 300 + i * -.3};
-    float[] b3 = {120, 330 + i * -.3};
-    Quad tail1 = new Quad(a3, b3, b2, a2);
+    a = new float[] {125, 300 + i * -.3};
+    b = new float[] {120, 330 + i * -.3};    
+    Quad tail1 = new Quad(a, b, body.getB(), body.getA());
     tail1.display();
     
     // TAIL 2
-    float[] a4 = {80, 250 + i * -.8};
-    float[] b4 = {70, 250 + i * -.8};
-    Quad tail2 = new Quad(a4, b4, b3, a3);
+    a = new float[] {70, 400 + i * -1};
+    b = new float[] {70, 400 + i * -1};
+    Quad tail2 = new Quad(a, b, tail1.getB(), tail1.getA());
     tail2.display();
     
     // HEAD
-    float[] c5 = {440, 250 + i };
-    float[] d5 = {440 + i * -.1, 210 + i };
-    Quad head = new Quad(d2, c2, c5, d5);
+    c = new float[] {440, 250 + i };
+    d = new float[] {440 + i * -.1, 210 + i };
+    Quad head = new Quad(body.getD(), body.getC(), c, d);
     head.display();
     
     // JAW
-    float[] c6 = {430, 280 + i };
-    float[] d6 = {430, 270 + i };
-    Quad jaw = new Quad(d2, c2, c6, d6);
+    c = new float[] {430, 280 + i };
+    d = new float[] {430, 270 + i };
+    Quad jaw = new Quad(body.getD(), body.getC(), c, d);
     jaw.display();
     
     // ARM
-    float[] c7 = {347, 332};
-    float[] d7 = {347, 332};
-    Quad arm = new Quad(c2, d2, c7, d7);
+    c = new float[] {347, 332};
+    d = new float[] {347, 332};
+    Quad arm = new Quad(body.getC(), body.getD(), c, d);
     arm.display();
-    
   }
 }
 
@@ -127,6 +127,20 @@ class Quad {
     vertex(dx, dy);
     endShape(CLOSE);
   }
+  
+  float[] getA () {
+    return new float[] {ax, ay};
+  }
+  float[] getB () {
+    return new float[] {bx, by};
+  }
+  float[] getC () {
+    return new float[] {cx, cy};
+  }
+  float[] getD () {
+    return new float[] {dx, dy};
+  }
+
 }
 
 // Print the Selected coordinates when the mouse is clicked.
@@ -141,7 +155,6 @@ void debugInfo(){
   
   text(mouseX, 10, 30); 
   text(mouseY, 110, 30);
-  text(i, 210, 30);
 }
 
 
