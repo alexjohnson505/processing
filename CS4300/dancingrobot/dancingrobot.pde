@@ -74,11 +74,36 @@ class Dino {
     Quad body = new Quad(a2, b2, c2, d2);
     body.display();
     
-    // TAIL
-    float[] a3 = {125, 190 + i * -.3};
-    float[] b3 = {120, 210 + i * -.3};
+    // TAIL 1
+    float[] a3 = {125, 300 + i * -.3};
+    float[] b3 = {120, 330 + i * -.3};
     Quad tail1 = new Quad(a3, b3, b2, a2);
     tail1.display();
+    
+    // TAIL 2
+    float[] a4 = {80, 250 + i * .3};
+    float[] b4 = {70, 250 + i * .3};
+    Quad tail2 = new Quad(a4, b4, b3, a3);
+    tail2.display();
+    
+    // HEAD
+    float[] c5 = {440, 250 + i };
+    float[] d5 = {420, 210 + i };
+    Quad head = new Quad(d2, c2, c5, d5);
+    head.display();
+    
+    // JAW
+    float[] c6 = {430, 280 + i };
+    float[] d6 = {430, 270 + i };
+    Quad jaw = new Quad(d2, c2, c6, d6);
+    jaw.display();
+    
+    // ARM
+    float[] c6 = {347, 332};
+    float[] d6 = {347, 332};
+    Quad arm = new Quad(c2, d2, c6, d6);
+    arm.display();
+    
   }
 }
 
