@@ -63,10 +63,10 @@ class RobotDino {
     float[] d = {0, 0};
     
     // BODY
-    a = new float[] {x - 90, 199 + i};
-    b = new float[] {x - 80 + i * -.3, 275 + i};
-    c = new float[] {x + 65 + i * -.2, 244 + i * 1.4};
-    d = new float[] {x + 45, 196 + i * 1.4};
+    a = new float[] {x - 90, y - 100 + i};
+    b = new float[] {x - 80 + i * -.3, y - 25 + i};
+    c = new float[] {x + 55 + i * -.2, y - 40 + i * 1.4};
+    d = new float[] {x + 45, y - 100 + i * 1.4};
     Quad body = new Quad(a, b, c, d);
     body.display();
   }
