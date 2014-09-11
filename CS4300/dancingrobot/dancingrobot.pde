@@ -36,7 +36,6 @@ void draw (){
   // Render dino, providing a number indicating it's
   // current position in a dance
   trex.display(x);
-  
 }
 
 class Dino {
@@ -148,8 +147,8 @@ void mouseClicked(){
   println("{" + mouseX + ", " + mouseY + "}");
 }
 
+// Print additional info to assist development
 void debugInfo(){
-    // Window Info
   textSize(32);
   fill(0, 102, 153);
   
