@@ -55,6 +55,8 @@ class RobotDino {
   
   // i is between 0 and 100;
   void display(float i){
+    x = x;
+    y = y + i;
     
     // Init vars
     float[] a = {0, 0};
@@ -69,6 +71,15 @@ class RobotDino {
     d = new float[] {x + 45, y - 100 + i * 1.4};
     Quad body = new Quad(a, b, c, d);
     body.display();
+    
+    pushMatrix();
+    translate(x, y);
+    rect(0, 0, 200, 100);
+    popMatrix();
+    
+    
+    
+    text("center", x, y);
   }
 }
 
