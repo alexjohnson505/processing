@@ -1,26 +1,16 @@
 // Alex Johnson 9/15/14
 // IM 2250 - Programming for Digital Media
-// Processing Exploration
+// Assignment 01 - Processing 2 Exploration
 
-int windowWidth = 1200;
-int windowHeight = 800;
+int windowWidth = 1280;
+int windowHeight = 768;
 
-int distanceBetweenDinos = 200;
+int distanceBetweenDinos = 450;
 
-  
-// Init empty array
-RobotDino[] dinos = {};
+// Grid of relative dino positions;
+int[] xValues = {0, 1, 2, 0, 1, 2, 0, 1, 2};
+int[] yValues = {0, 0, 0, 1, 1, 1, 2, 2, 2};
 
-// Let's make some Dinos  
-dinos[0] = new RobotDino(100, 100);
-dinos[1] = new RobotDino(200, 100);
-dinos[2] = new RobotDino(300, 100);
-dinos[3] = new RobotDino(100, 200);
-dinos[4] = new RobotDino(200, 200);
-dinos[5] = new RobotDino(300, 200);
-dinos[6] = new RobotDino(100, 300);
-dinos[7] = new RobotDino(200, 400);
-dinos[8] = new RobotDino(300, 500);
   
 // Initialize program
 void setup (){
@@ -42,22 +32,34 @@ void draw (){
   // position to render Dino's dance
   float x = mouseY / (float)windowHeight * 100; 
   
+  // Dynamic background color
   background(250, 175, 84 + x);
-
-  // Create new Dino
-  RobotDino roboRex = new RobotDino(450, 250);
   
   // Instructions
   text("Move your Mouse Up and Down.", 500, 700);
   
-  for (int i = dinos.length() ; i > 0 ; i--){
-    print(i);
-  }
+  // Create new Dino
+  RobotDino roboRex = new RobotDino(450, 250);
   
   // Output Dinos
   pushMatrix();
+    
+    // Scale down scene
     scale(.5);
-    roboRex.display(x);
+      
+    // offset dino grid
+    translate(800, 250);
+    
+    // Init counter for iterating through Dinos
+    int i = xValues.length;
+    
+    // Render grid of Dinos
+    while(i > 0){
+      int ax = xValues[i - 1] * distanceBetweenDinos;
+      int ay = yValues[i - 1] * distanceBetweenDinos;
+      roboRex.display(x, ax, ay);
+      i--;
+    }
   popMatrix();
 }
 
@@ -73,9 +75,22 @@ class RobotDino {
     y = centerY;
   }
   
-  // i is between 0 and 100;
+  // Default display for a Dino. Takes in a
+  // i value between 0 and 100, representing the state
+  // of the animation
   void display(float i){
-    y = y + i;
+    render(i, x, y);
+  }
+  
+  // Provide option parameters for manually 
+  // overriding the Dinos' center position  
+  void display(float i, float x2, float y2){
+    render(i, x2, y2);
+  }
+  
+  void render(float i, float centerX, float centerY){
+    x = centerX;
+    y = centerY + i;
     
     fill(55, 135, 86);
     
@@ -161,9 +176,8 @@ class RobotDino {
 }
 
 // Represents a quadrilateral polygon.
-// Quad takes 4 arrays, each representing a coordinate,
-// and connect those coordinates with lines,  counter 
-// clockwise starting with the top left vertex.
+// Quad takes 4 arrays, each representing a cartesian point,
+// and connect those coordinates with verteces
 class Quad {
   float ax, ay, bx, by, cx, cy, dx, dy;
   
