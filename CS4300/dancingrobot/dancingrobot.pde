@@ -31,12 +31,10 @@ void draw (){
   float x = mouseY / (float)windowHeight * 100; 
 
   // Create new Dino
-//  Dino trex = new Dino(260, 200);
   RobotDino roboRex = new RobotDino(450, 250);
   
   // Render dino, providing a number indicating it's
   // current position in a dance
-//  trex.display(x);
   roboRex.display(x);
 }
 
@@ -51,7 +49,6 @@ class RobotDino {
   
   // i is between 0 and 100;
   void display(float i){
-    x = x;
     y = y + i;
     
     // Init vars
@@ -82,13 +79,6 @@ class RobotDino {
     Quad tail2 = new Quad(a, b, c, d);
 
    
-    // RENDER
-    pushMatrix();
-      translate(x, y);
-      body.display();
-      tail1.display();
-      tail2.display();
-    popMatrix();
 
     
     // JAW
@@ -110,71 +100,31 @@ class RobotDino {
       translate(x, y - 40);
       rotate(radians(-90 + i));
       triangle(0, 0, 10, 0, 5, 60);
-    popMatrix();    
+    popMatrix();
+
+    // THIGH
+    pushMatrix();
+      a = new float[] {0, 0};
+      b = new float[] {40, 0};
+      c = new float[] {30, 60};
+      d = new float[] {0, 60};
+      Quad thigh = new Quad(a, b, c, d);
+    popMatrix();
+    
+    
+    
+    // RENDER
+    pushMatrix();
+      translate(x, y);
+      body.display();
+      tail1.display();
+      tail2.display();
+      thigh.display();
+    popMatrix();
+
     
   }
 }
-
-//class Dino {
-//  float centerX;
-//  float centerY;
-//  
-//  Dino(float centerX, float centerY){
-//    centerX = centerX;
-//    centerY = centerY;
-//  }
-//  
-//  // BODY CONSTRUCTION
-//  // Take an input for scale
-//  void display(float i) { 
-//    
-//    // FEET
-//    float[] a = {240, 240 + i};
-//    float[] b = {240, 360};
-//    float[] c = {310, 360};
-//    float[] d = {280, 240 + i};
-//    Quad feet = new Quad(a, b, c, d);
-//    feet.display();
-//
-//    // BODY
-//    a = new float[] {214, 199 + i};
-//    b = new float[] {217 + i * -.3, 275 + i};
-//    c = new float[] {365 + i * -.2, 244 + i * 1.4};
-//    d = new float[] {345, 196 + i * 1.4};
-//    Quad body = new Quad(a, b, c, d);
-//    body.display();
-//    
-//    // TAIL 1
-//    a = new float[] {125, 300 + i * -.1};
-//    b = new float[] {120, 330 + i * -.1};    
-//    Quad tail1 = new Quad(a, b, body.getB(), body.getA());
-//    tail1.display();
-//    
-//    // TAIL 2
-//    a = new float[] {70, 400 + i * -1};
-//    b = new float[] {70, 400 + i * -1};
-//    Quad tail2 = new Quad(a, b, tail1.getB(), tail1.getA());
-//    tail2.display();
-//    
-//    // HEAD
-//    c = new float[] {440, 250 + i };
-//    d = new float[] {440 + i * -.1, 210 + i };
-//    Quad head = new Quad(body.getD(), body.getC(), c, d);
-//    head.display();
-//    
-//    // JAW
-//    c = new float[] {430, 280 + i };
-//    d = new float[] {430, 270 + i };
-//    Quad jaw = new Quad(body.getD(), body.getC(), c, d);
-//    jaw.display();
-//    
-//    // ARM
-//    c = new float[] {347, 332};
-//    d = new float[] {347, 332};
-//    Quad arm = new Quad(body.getC(), body.getD(), c, d);
-//    arm.display();
-//  }
-//}
 
 // Represents a quadrilateral polygon.
 // Quad takes 4 arrays, each representing a coordinate,
