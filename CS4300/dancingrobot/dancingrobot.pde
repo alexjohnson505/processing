@@ -101,11 +101,16 @@ class RobotDino {
     // HEAD
     pushMatrix();
       translate(x + 50, y - 20);
-      rotate(radians(20 - i / 2));
+      rotate(radians(20 - i / 3));
       rect(-20, -100, 120, 60);
     popMatrix();
 
-    
+    // ARM
+    pushMatrix();
+      translate(x, y - 40);
+      rotate(radians(-90 + i));
+      triangle(0, 0, 10, 0, 5, 60);
+    popMatrix();    
     
   }
 }
