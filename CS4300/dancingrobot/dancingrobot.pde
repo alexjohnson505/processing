@@ -2,8 +2,6 @@
 // CS 4300 - Computer Graphics
 // A Dancing T-Rex
 
-int centerX = 400;
-int centerY = 200;
 
 int windowWidth = 800;
 int windowHeight = 400;
@@ -11,18 +9,20 @@ int windowHeight = 400;
 // Initialize program
 void setup (){
   
+  // Disable stroke
+  noStroke();
+  
   // Set size of preview window
   size(windowWidth, windowHeight);
   
   // Set default text options
   textFont(createFont("Georgia", 24));
-  
 }
 
 // Render
 void draw (){
-  background(0, 255, 255);
-  debugInfo();
+  background(255, 175, 84);
+//  debugInfo();
   
   // Convert the Y position of the user's cursor 
   // into a corresponding value between 0 and 100;
@@ -51,6 +51,8 @@ class RobotDino {
   void display(float i){
     y = y + i;
     
+    fill(55, 135, 86);
+    
     // Init vars
     float[] a = {0, 0};
     float[] b = {0, 0};
@@ -77,7 +79,6 @@ class RobotDino {
     c = new float[] {tail1.cx, tail1.cy};
     d = new float[] {tail1.dx, tail1.dy};
     Quad tail2 = new Quad(a, b, c, d);
-
 
     // JAW
     pushMatrix();
@@ -121,8 +122,6 @@ class RobotDino {
       rect(0, 0, 40, 10);
     popMatrix();
     
-
-    
     // RENDER
     pushMatrix();
       translate(x, y);
@@ -132,8 +131,6 @@ class RobotDino {
       thigh.display();
       calf.display();
     popMatrix();
-
-    
   }
 }
 
@@ -155,17 +152,6 @@ class Quad {
     dy = d[1];    
   }
   
-  Quad(float ax, float ay, float bx, float by, float cx, float cy, float dx, float dy) {
-    ax = ax;
-    ay = ay;
-    bx = bx;
-    by = by;
-    cx = cx;
-    cy = cy;
-    dx = dx;
-    dy = dy;
-  }
-  
   // Draw lines connecting the 4 vertices
   void display() {
     beginShape();
@@ -175,20 +161,6 @@ class Quad {
     vertex(dx, dy);
     endShape(CLOSE);
   }
-  
-  float[] getA () {
-    return new float[] {ax, ay};
-  }
-  float[] getB () {
-    return new float[] {bx, by};
-  }
-  float[] getC () {
-    return new float[] {cx, cy};
-  }
-  float[] getD () {
-    return new float[] {dx, dy};
-  }
-
 }
 
 // Print the Selected coordinates when the mouse is clicked.
