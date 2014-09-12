@@ -78,9 +78,7 @@ class RobotDino {
     d = new float[] {tail1.dx, tail1.dy};
     Quad tail2 = new Quad(a, b, c, d);
 
-   
 
-    
     // JAW
     pushMatrix();
       translate(x + 60, y - 70);
@@ -101,17 +99,29 @@ class RobotDino {
       rotate(radians(-90 + i));
       triangle(0, 0, 10, 0, 5, 60);
     popMatrix();
-
+    
     // THIGH
+    a = new float[] {-60, -40};
+    b = new float[] {0, -40};
+    c = new float[] {-10 + i / 2, 15 - i/3};
+    d = new float[] {-45 + i / 2, 15 - i/3}; 
+    Quad thigh = new Quad(a, b, c, d);
+
+    // CALF
+    a = new float[] {thigh.dx, thigh.dy};
+    b = new float[] {thigh.cx, thigh.cy};
+    c = new float[] {-20, 90 - i};
+    d = new float[] {-30, 90 - i};
+    Quad calf = new Quad(a, b, c, d);
+    
+    // FEET
     pushMatrix();
-      a = new float[] {0, 0};
-      b = new float[] {40, 0};
-      c = new float[] {30, 60};
-      d = new float[] {0, 60};
-      Quad thigh = new Quad(a, b, c, d);
+      translate(x - 30, y + 80 - i);
+      rotate(radians(20 + -i/6));
+      rect(0, 0, 40, 10);
     popMatrix();
     
-    
+
     
     // RENDER
     pushMatrix();
@@ -120,6 +130,7 @@ class RobotDino {
       tail1.display();
       tail2.display();
       thigh.display();
+      calf.display();
     popMatrix();
 
     
