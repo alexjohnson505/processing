@@ -1,4 +1,6 @@
 // Class Ball
+// Defines an example object, 
+// Constructed as a demo on processing 2.2.1 objects 
 
 int w = 400;
 int h = 250;
