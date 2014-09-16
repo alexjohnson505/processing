@@ -7,10 +7,12 @@ final int viewHeight = 250;
 
 // GLOBAL VARIABLES
 color backgroundColor = color(0,0,0), fillColor = color(90, 90, 250);
+
 int currentBallCount = 0;
+int maxBallCount = 100;
 
 // OBJECTS
-Ball[] balls = new Ball[100];
+Ball[] balls = new Ball[maxBallCount]; // Init w/ max length
 
 void setup(){
 
@@ -18,21 +20,22 @@ void setup(){
   size(viewWidth, viewHeight);
   background(backgroundColor);
   fill(color(250, 250, 250));
-  balls[0] = new Ball(mouseX, mouseY, 20, color(204, 153, 0));
+//  balls[0] = new Ball(mouseX, mouseY, 20, color(204, 153, 0));
 }
 
 void draw(){
   background(0);
  
-//  for (int i = 0; i < 100 ; i++){
-    balls[0].move();
-    balls[0].display();
-//  }
+  for (int i = 0; i < currentBallCount ; i++){
+    balls[i].move();
+    balls[i].display();
+  }
 }
 
 void mouseClicked(){
-  int count = balls.length;
-  balls[count++] = new Ball(mouseX, mouseY, 20, color(204, 153, 0));
+  
+  balls[currentBallCount] = new Ball(mouseX, mouseY, 20, color(204, 153, 0));
+  currentBallCount++;
 }
 
 class Ball {
@@ -48,8 +51,8 @@ class Ball {
     y = pY;
     myColor = pColor;
     radius = pRadius;
-    xSpeed = random(5, 200);
-    ySpeed = random(5, 200);
+    xSpeed = random(2, 15);
+    ySpeed = random(2, 15);
   }
 
   void display(){
