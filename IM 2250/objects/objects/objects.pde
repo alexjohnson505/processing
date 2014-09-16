@@ -1,17 +1,16 @@
-
 // Objects in Processing 2.2.1
 // Constructed as a demo on objects in Processing 2
 
 // CONSTANTS
 final int viewWidth = 400;
 final int viewHeight = 250;
-final int maxBallCount = 25;
 
+// GLOBAL VARIABLES
 color backgroundColor = color(0,0,0), fillColor = color(90, 90, 250);
-float xSpeed, ySpeed;
+int currentBallCount = 0;
 
-Ball b; // Initialize a new Ball object
-Ball[] balls; // Initialize and Array of Objects
+// OBJECTS
+Ball[] balls = new Ball[100];
 
 void setup(){
 
@@ -19,30 +18,30 @@ void setup(){
   size(viewWidth, viewHeight);
   background(backgroundColor);
   fill(color(250, 250, 250));
-  
-  // Assign an Instance of a Ball to variable b
-//  b = new Ball(random(10, 100), random(10, 100), 15, color(204, 153, 0));
-  
-  balls = new Ball[maxBallCount];
-  
-  for (int i = 0; i < maxBallCount ; i++){
-    balls[i] = new Ball(random(10, 100), random(10, 100), 15, color(204, 153, 0));
-  }
+  balls[0] = new Ball(mouseX, mouseY, 20, color(204, 153, 0));
 }
 
 void draw(){
-  for (int i = 0; i < maxBallCount ; i++){
-    balls[i].move();
-    balls[i].display();
-  }
+  background(0);
+ 
+//  for (int i = 0; i < 100 ; i++){
+    balls[0].move();
+    balls[0].display();
+//  }
 }
 
+void mouseClicked(){
+  int count = balls.length;
+  balls[count++] = new Ball(mouseX, mouseY, 20, color(204, 153, 0));
+}
 
 class Ball {
   float rad;
   float x, y;
   color myColor;
   float radius;
+  float xSpeed;
+  float ySpeed;
 
   Ball(float pX, float pY, float pRadius, color pColor){
     x = pX;
@@ -66,7 +65,6 @@ class Ball {
     if (x > width || x < 0){
       xSpeed *= -1;
     }
-
 
     if (y > height || y < 0){
       ySpeed *= -1;
