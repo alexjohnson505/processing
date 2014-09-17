@@ -2,9 +2,13 @@
 // IM 2250 - Programming for Digital Media
 // Assignment 01 - Processing 2 Exploration
 
-int windowWidth = 500;
-int windowHeight = 350;
-  
+final int windowWidth = 500;
+final int windowHeight = 350;
+final float speed = 1;
+
+// Define penguin in start position
+Penguin p = new Penguin(200, 200);
+
 // Initialize program
 void setup (){
   
@@ -13,6 +17,7 @@ void setup (){
   
   // Set size of preview window
   size(windowWidth, windowHeight);
+  
 }
 
 // Render
@@ -21,8 +26,6 @@ void draw (){
   // Convert the Y position of the user's cursor 
   // into a corresponding value between 0 and 100;
   // This number represents the percentage of height
-  // to animate the Dino at, indication the current
-  // position to render Dino's dance
   float x = mouseY / (float)windowHeight * 100; 
   
   // Dynamic background color
@@ -30,35 +33,19 @@ void draw (){
   
   // Instructions
   text("Click to change direction.", 200, 300);
-
   
-  // New Penguin
-  Penguin p = new Penguin(200, 200);
+  // Render Penguin
   p.render();
-  
-//  
-//  // Output Dino
-//  pushMatrix();
-//    
-//    // Scale down scene
-//    scale(.5);
-//      
-//    // offset dino grid
-//    translate(800, 250);
-//    
-//    // Init counter for iterating through Dinos
-//    int i = xValues.length;
-//    
-//    // Render grid of Dinos
-//    while(i > 0){
-//      int ax = xValues[i - 1] * distanceBetweenDinos;
-//      int ay = yValues[i - 1] * distanceBetweenDinos;
-//      roboRex.display(x, ax, ay);
-//      i--;
-//    }
-//  popMatrix();
 }
 
+void mouseClicked(){
+  
+  // Print the Selected coordinates when the mouse is clicked.
+  println("{" + mouseX + ", " + mouseY + "}");
+  
+  // Change penguins direction
+  p.changeDirection();
+}
  
 class Penguin {
   float x;
@@ -74,7 +61,9 @@ class Penguin {
   }
   
   void changeDirection(){
-    direction = direction + 1 % 4;
+    direction = direction + 1;
+    direction = direction % 4;
+    println(direction);
   }
   
   // Default display for a Dino. Takes in a
@@ -85,8 +74,15 @@ class Penguin {
   }
   
   void render(){
-//    x = centerX;
-//    y = centerY + i;
+    if (direction == 0){
+      x = x - 1;
+    } else if (direction == 1){
+      y = y - 1;
+    } else if (direction == 2){
+      x = x + 1;
+    } else {
+      y = y + 1;
+    }
     
     // Init vars
     float[] a = {0, 0};
@@ -115,7 +111,7 @@ class Penguin {
     Quad beak = new Quad(a, b, c, d);
     
     pushMatrix();
-      translate(100, 100);
+      translate(x, y);
       scale(1.5);
       
       fill(0, 0, 0);
@@ -157,11 +153,6 @@ class Quad {
     vertex(dx, dy);
     endShape(CLOSE);
   }
-}
-
-// Print the Selected coordinates when the mouse is clicked.
-void mouseClicked(){
-  println("{" + mouseX + ", " + mouseY + "}");
 }
 
 // Print additional info to assist development
