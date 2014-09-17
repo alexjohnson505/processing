@@ -4,7 +4,7 @@
 
 final int windowWidth = 500;
 final int windowHeight = 350;
-final float speed = 1;
+final float movementSpeed = 1;
 
 // Define penguin in start position
 Penguin p = new Penguin(200, 200);
@@ -51,13 +51,13 @@ class Penguin {
   float x;
   float y;
   int direction;
-  int speed;
+  float speed;
   
   Penguin(float pX, float pY) {
     x = pX;
     y = pY;
     direction = 0;
-    speed = 5;
+    speed = movementSpeed;
   }
   
   void changeDirection(){
@@ -75,13 +75,13 @@ class Penguin {
   
   void render(){
     if (direction == 0){
-      x = x - 1;
+      x = x - 1 * speed;
     } else if (direction == 1){
-      y = y - 1;
+      y = y - 1 * speed;
     } else if (direction == 2){
-      x = x + 1;
+      x = x + 1 * speed;
     } else {
-      y = y + 1;
+      y = y + 1 * speed;
     }
     
     // Init vars
