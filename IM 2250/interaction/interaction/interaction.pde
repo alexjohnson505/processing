@@ -1,13 +1,18 @@
 // Alex Johnson 9/15/14
 // IM 2250 - Programming for Digital Media
-// Assignment 01 - Processing 2 Exploration
+// Assignment 02 - Processing 2 Exploration
 
 final int windowWidth = 500;
 final int windowHeight = 350;
-final float movementSpeed = 1;
+
+// Set Penguin movement speed (pixels per draw)
+final float movementSpeed = 1.2;
 
 // Define penguin in start position
 Penguin p = new Penguin(200, 200);
+
+// Array of food 
+Fish[] fishies = new Fish[3];
 
 // Initialize program
 void setup (){
@@ -18,11 +23,19 @@ void setup (){
   // Set size of preview window
   size(windowWidth, windowHeight);
   
+  int i = 2;
+  
+  // Create array of food (3 fish)
+  while (i > -1){
+    fishies[i] = new Fish();
+    i--;
+  }
 }
 
 // Render
 void draw (){
-  
+
+    
   // Convert the Y position of the user's cursor 
   // into a corresponding value between 0 and 100;
   // This number represents the percentage of height
@@ -36,12 +49,17 @@ void draw (){
   
   // Render Penguin
   p.render();
+  
+  for (int i = 0; i < 3; i++){
+    fishies[i].display();
+  }
+  
 }
 
 void mouseClicked(){
   
   // Print the Selected coordinates when the mouse is clicked.
-  println("{" + mouseX + ", " + mouseY + "}");
+  // println("{" + mouseX + ", " + mouseY + "}");
   
   // Change penguins direction
   p.changeDirection();
@@ -63,7 +81,12 @@ class Penguin {
   void changeDirection(){
     direction = direction + 1;
     direction = direction % 4;
-    println(direction);
+  }
+  
+  // 180d turn around
+  void reverse(){
+    direction = direction + 2;
+    direction = direction % 4;
   }
   
   // Default display for a Dino. Takes in a
@@ -74,6 +97,8 @@ class Penguin {
   }
   
   void render(){
+    // Determine movement based
+    // on current direction
     if (direction == 0){
       x = x - 1 * speed;
     } else if (direction == 1){
@@ -91,39 +116,64 @@ class Penguin {
     float[] d = {0, 0};
 
     // BODY
-    a = new float[] {0, 0};
-    b = new float[] {0, 40};
-    c = new float[] {30, 40};
-    d = new float[] {30, 0};
+    a = new float[] {-15, 0};
+    b = new float[] {-15, 40};
+    c = new float[] {15, 40};
+    d = new float[] {15, 0};
     Quad body = new Quad(a, b, c, d);
     
     // BELLY
-    a = new float[] {4, 18};
-    b = new float[] {4, 40};
-    c = new float[] {20, 40};
-    d = new float[] {20, 18};
+    a = new float[] {-11, 18};
+    b = new float[] {-11, 40};
+    c = new float[] {5, 40};
+    d = new float[] {5, 18};
     Quad belly = new Quad(a, b, c, d);
 
-    a = new float[] {12, 6};
-    b = new float[] {12, 14};
-    c = new float[] {-10, 12};
-    d = new float[] {-10, 9};
+    a = new float[] {-3, 6};
+    b = new float[] {-3, 14};
+    c = new float[] {-25, 12};
+    d = new float[] {-25, 9};
     Quad beak = new Quad(a, b, c, d);
     
     pushMatrix();
       translate(x, y);
-      scale(1.5);
+      
+      // Turn penguin around based on direction of movement
+      if (direction == 1 || direction == 2){
+        scale(-1.5, 1.5);
+      } else {
+        scale(1.5, 1.5);
+      }
       
       fill(0, 0, 0);
       body.display();
       
       fill(255, 255, 255);
       belly.display();
-      
+            
       fill(255, 255, 0);
       beak.display();
     popMatrix();
+  }
+}
 
+// Represents a target object
+class Fish {
+  float x;
+  float y;
+  
+  Fish(){
+    x = random(0, windowWidth);
+    y = random(0, windowHeight);
+  }
+  
+  void display(){
+    pushMatrix();
+      stroke(1);
+      fill(20, 200, 150);
+      translate(x, y);
+      rect(x, y, 30, 10);
+    popMatrix();
   }
 }
 
@@ -154,14 +204,4 @@ class Quad {
     endShape(CLOSE);
   }
 }
-
-// Print additional info to assist development
-void debugInfo(){
-  textSize(32);
-  fill(0, 102, 153);
-  
-  text(mouseX, 10, 30); 
-  text(mouseY, 110, 30);
-}
-
 
