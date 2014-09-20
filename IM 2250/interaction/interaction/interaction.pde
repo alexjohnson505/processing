@@ -16,10 +16,7 @@ Fish[] fishies = new Fish[3];
 
 // Initialize program
 void setup (){
-  
-  // Disable stroke
-  noStroke();
-  
+ 
   // Set size of preview window
   size(windowWidth, windowHeight);
   
@@ -34,22 +31,22 @@ void setup (){
 
 // Render
 void draw (){
-
-    
+  
   // Convert the Y position of the user's cursor 
   // into a corresponding value between 0 and 100;
-  // This number represents the percentage of height
   float x = mouseY / (float)windowHeight * 100; 
   
   // Dynamic background color
-  background(250, 175, 84 + x);
+  background(250, 175 - x, 84 + x);
   
   // Instructions
   text("Click to change direction.", 200, 300);
+  text(mouseX + " " + mouseY, 200, 30); 
   
   // Render Penguin
   p.render();
   
+   // Render Fish
   for (int i = 0; i < 3; i++){
     fishies[i].display();
   }
@@ -165,6 +162,8 @@ class Fish {
   Fish(){
     x = random(0, windowWidth);
     y = random(0, windowHeight);
+    
+    println("Fish position at:" + x + ", " + y);
   }
   
   void display(){
