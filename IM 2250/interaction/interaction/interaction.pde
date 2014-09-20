@@ -8,6 +8,9 @@ final int windowHeight = 350;
 // Set Penguin movement speed (pixels per draw)
 final float movementSpeed = 1.2;
 
+// Record score
+int score = 0;
+
 // Define penguin in start position
 Penguin p = new Penguin(200, 200);
 
@@ -37,27 +40,37 @@ void draw (){
   float x = mouseY / (float)windowHeight * 100; 
   
   // Dynamic background color
-  background(250, 175 - x, 84 + x);
+  background(250, 175 - .3 * x, 84 + .2 * x);
   
   // Instructions
-  text("Click to change direction.", 200, 300);
+  text("Eat the fish. Click mouse to change direction.", 130, 300);
+  text("Fish Eaten: " + score, 130, 320);
   text(mouseX + " " + mouseY, 200, 30); 
   
-  // Render Penguin
-  p.render();
+  // Watch for wall collision
+  if (p.x < 0 || p.x > windowWidth || p.y < 0 || p.y > windowHeight){
+    p.reverse();
+  }
   
    // Render Fish
   for (int i = 0; i < 3; i++){
     fishies[i].display();
+    if (withinRange(fishies[i].x, p.x, 15) && withinRange(fishies[i].y, p.y, 30)){
+      score++;
+      fishies[i] = new Fish();
+    }
   }
   
+  // Render Penguin
+  p.render();
+}
+
+boolean withinRange(float x1, float x2, float discretion){
+  float difference = max(x1, x2) - min(x1, x2); 
+  return difference < discretion;
 }
 
 void mouseClicked(){
-  
-  // Print the Selected coordinates when the mouse is clicked.
-  // println("{" + mouseX + ", " + mouseY + "}");
-  
   // Change penguins direction
   p.changeDirection();
 }
@@ -78,6 +91,7 @@ class Penguin {
   void changeDirection(){
     direction = direction + 1;
     direction = direction % 4;
+    println("Penguin position at: " + x + ", " + y);
   }
   
   // 180d turn around
@@ -156,22 +170,25 @@ class Penguin {
 
 // Represents a target object
 class Fish {
-  float x;
-  float y;
+  float x; // X Position
+  float y; // Y Position
+  float w; // Width
+  float h; // Height
   
   Fish(){
     x = random(0, windowWidth);
     y = random(0, windowHeight);
+    w = random(10, 60);
+    h = random(5, 20);
     
-    println("Fish position at:" + x + ", " + y);
+    println("Fish at: " + x + ", " + y);
   }
   
   void display(){
     pushMatrix();
-      stroke(1);
+      noStroke();
       fill(20, 200, 150);
-      translate(x, y);
-      rect(x, y, 30, 10);
+      rect(x, y, w, h);
     popMatrix();
   }
 }
