@@ -5,7 +5,7 @@
 final int windowWidth = 500;
 final int windowHeight = 350;
 
-// Set Penguin movement speed (pixels per draw)
+// Set Penguin movement speed
 final float movementSpeed = 1.2;
 
 // Record score
@@ -45,9 +45,9 @@ void draw (){
   // Instructions
   text("Eat the fish. Click mouse to change direction.", 130, 300);
   text("Fish Eaten: " + score, 130, 320);
-  text(mouseX + " " + mouseY, 200, 30); 
+  // text(mouseX + " " + mouseY, 200, 30); // Debug code 
   
-  // Watch for wall collision
+  // When Penguin collides with the walls, change direction automatically
   if (p.x < 0 || p.x > windowWidth || p.y < 0 || p.y > windowHeight){
     p.reverse();
   }
@@ -55,8 +55,15 @@ void draw (){
    // Render Fish
   for (int i = 0; i < 3; i++){
     fishies[i].display();
+    
+    // Super basic collision detection
+    // TODO: Calculate based on objects, not basic proximity
     if (withinRange(fishies[i].x, p.x, 15) && withinRange(fishies[i].y, p.y, 30)){
+      
+      // Increment score
       score++;
+      
+      // Add a new fish elsewhere
       fishies[i] = new Fish();
     }
   }
@@ -65,13 +72,17 @@ void draw (){
   p.render();
 }
 
+// Are the 2 provided values within a certain range of each other?
+//   example: are 20 and 45 within '30' pixels -> TRUE
+//   example: are 20 and 45 within '10' pixels -> FALSE
 boolean withinRange(float x1, float x2, float discretion){
   float difference = max(x1, x2) - min(x1, x2); 
   return difference < discretion;
 }
 
 void mouseClicked(){
-  // Change penguins direction
+  
+  // Change penguin's direction
   p.changeDirection();
 }
  
@@ -91,23 +102,21 @@ class Penguin {
   void changeDirection(){
     direction = direction + 1;
     direction = direction % 4;
-    println("Penguin position at: " + x + ", " + y);
   }
   
-  // 180d turn around
+  // Reverse direction
   void reverse(){
     direction = direction + 2;
     direction = direction % 4;
   }
   
-  // Default display for a Dino. Takes in a
-  // i value between 0 and 100, representing the state
-  // of the animation
+  // Render penguin
   void display(){
     render();
   }
   
   void render(){
+    
     // Determine movement based
     // on current direction
     if (direction == 0){
@@ -180,8 +189,6 @@ class Fish {
     y = random(0, windowHeight);
     w = random(10, 60);
     h = random(5, 20);
-    
-    println("Fish at: " + x + ", " + y);
   }
   
   void display(){
