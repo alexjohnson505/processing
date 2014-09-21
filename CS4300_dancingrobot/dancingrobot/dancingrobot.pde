@@ -3,8 +3,8 @@
 // Due 9/24/14
 // A Dancing T-Rex
 
-int windowWidth = 800;
-int windowHeight = 600;
+final int windowWidth = 800;
+final int windowHeight = 600;
 
 // Initialize program
 void setup (){
@@ -47,9 +47,8 @@ void draw (){
   fill(60, 180, 113);
   rect(0, 450, windowWidth, windowHeight / 2);
   
-  // Render objects onto scene. 
-  // Provide an x value, representing
-  // the current position in a 'dance'
+  // Render objects onto scene. Provide an x value, 
+  // representing the current position in a 'dance'
   tree1.display(x);
   tree2.display(x);
   tree3.display(x);
@@ -58,9 +57,9 @@ void draw (){
   // Provide user instructions
   textSize(20);
   text("Move the mouse up and down.", 260, 540);
-  
 }
 
+// Create a 'dancing' geometric T-rex.  
 class RobotDino {
   float x;
   float y;
@@ -70,7 +69,8 @@ class RobotDino {
     y = centerY;
   }
   
-  // i is between 0 and 100;
+  // Provide i, representing current
+  // position in the dance
   void display(float i){
     y = y + i;
     
@@ -158,6 +158,8 @@ class RobotDino {
   }
 }
 
+// Create a geometric tree.
+// Takes a x,y position, and a scale (0-to-1)
 class Tree {
   float x;
   float y;
