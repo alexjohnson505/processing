@@ -81,7 +81,7 @@ class RobotDino {
     float[] d = {0, 0};
     
     // Set dino color
-    fill(55, 135, 86);
+    fill(165,42,42);
 
     // BODY
     a = new float[] {-90, -100};
