@@ -1,10 +1,10 @@
-// Alex Johnson 9/9/14
+// Alex Johnson
 // CS 4300 - Computer Graphics
+// Due 9/24/14
 // A Dancing T-Rex
 
-
 int windowWidth = 800;
-int windowHeight = 400;
+int windowHeight = 600;
 
 // Initialize program
 void setup (){
@@ -21,8 +21,6 @@ void setup (){
 
 // Render
 void draw (){
-  background(255, 175, 84);
-//  debugInfo();
   
   // Convert the Y position of the user's cursor 
   // into a corresponding value between 0 and 100;
@@ -30,12 +28,37 @@ void draw (){
   // to animate the Dino at.
   float x = mouseY / (float)windowHeight * 100; 
 
-  // Create new Dino
-  RobotDino roboRex = new RobotDino(450, 250);
+  // Dynamic background
+  background(250, 175 - .3 * x, 84 + .2 * x);
   
-  // Render dino, providing a number indicating it's
-  // current position in a dance
+  // Create tree #1
+  Tree tree1 = new Tree(223, 320, .7);
+  
+  // Create tree #2
+  Tree tree2 = new Tree(660, 270, 1);
+  
+  // Create tree #3
+  Tree tree3 = new Tree(100, 360, .6);
+  
+  // Create new Dino
+  RobotDino roboRex = new RobotDino(450, 380);
+  
+  // Render ground
+  fill(60, 180, 113);
+  rect(0, 450, windowWidth, windowHeight / 2);
+  
+  // Render objects onto scene. 
+  // Provide an x value, representing
+  // the current position in a 'dance'
+  tree1.display(x);
+  tree2.display(x);
+  tree3.display(x);
   roboRex.display(x);
+  
+  // Provide user instructions
+  textSize(20);
+  text("Move the mouse up and down.", 260, 540);
+  
 }
 
 class RobotDino {
@@ -51,13 +74,14 @@ class RobotDino {
   void display(float i){
     y = y + i;
     
-    fill(55, 135, 86);
-    
     // Init vars
     float[] a = {0, 0};
     float[] b = {0, 0};
     float[] c = {0, 0};
     float[] d = {0, 0};
+    
+    // Set dino color
+    fill(55, 135, 86);
 
     // BODY
     a = new float[] {-90, -100};
@@ -130,6 +154,38 @@ class RobotDino {
       tail2.display();
       thigh.display();
       calf.display();
+    popMatrix();
+  }
+}
+
+class Tree {
+  float x;
+  float y;
+  float scale;
+  
+  Tree(float pX, float pY, float sc){
+    x = pX;
+    y = pY;
+    scale = sc;
+  }
+  
+  void display(float i) {
+    pushMatrix();
+      translate(x, y);
+      rotate(radians(i * .1));
+      scale(scale);
+      
+      // Create trunk
+      fill(139, 69, 19);
+      rect(0, 0, 30, 200);
+       
+      // Create leaves
+      fill(34, 139, 34);
+      ellipse(0,  -20, 150, 150);
+      ellipse(-30,  0, 150, 100);
+      ellipse(10,   0, 150, 100);
+      ellipse(30,   0, 100, 150);
+      ellipse(30,   0, 190, 100);
     popMatrix();
   }
 }
