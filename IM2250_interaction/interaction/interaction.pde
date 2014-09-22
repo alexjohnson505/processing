@@ -11,10 +11,13 @@ final float movementSpeed = 1.2;
 // Record score
 int score = 0;
 
+// set margin for fish
+float margin = 20;
+
 // Define penguin in start position
 Penguin p = new Penguin(200, 200);
 
-// Definate food assets
+// Define food image assets
 PImage fish;
 PImage food;
 
@@ -33,7 +36,8 @@ void setup (){
   
   // Create array of food (3 fish)
   fishies = new ArrayList<Fish>();
-  for (int i = 0; i < 3; i++){
+  
+  for (int i = 0; i < 4; i++){
     fishies.add(new Fish());
   }
 }
@@ -51,21 +55,20 @@ void draw (){
   // Instructions
   text("Eat the fish. Click mouse to change direction.", 130, 300);
   text("Fish Eaten: " + score, 130, 320);
-  // text(mouseX + " " + mouseY, 200, 30); // Debug code 
-  
+ 
   // When Penguin collides with the walls, change direction automatically
   if (p.x < 0 || p.x > windowWidth || p.y < 0 || p.y > windowHeight){
     p.reverse();
   }
   
-   // Render Fish
-  for (int i = 0; i < fishies.size() - 1; i++){
+ // Render Fish
+ for (int i = 0; i < fishies.size() - 1; i++){
     Fish current = fishies.get(i);
     
     current.display();
     
     // Super basic collision detection
-    if (current.alive && withinRange(current.x, p.x, 15) && withinRange(current.y, p.y, 30)){
+    if (current.alive && p.collide(current.x, current.y)){
       
       // Kill fish
       current.alive = false;
@@ -149,8 +152,31 @@ class Penguin {
     direction = direction % 4;
   }
   
-  void collide(float x, float y){
-    println(x + y);
+  boolean collide(float pX, float pY){
+    Rectangle fish = new Rectangle(pX, pY, 23, 9);
+    Rectangle penguin = new Rectangle(p.x, p.y, 46, 60);
+   
+    
+    if (fish.x < penguin.x + penguin.width &&
+        fish.x + fish.width > penguin.x &&
+        fish.y < penguin.y + penguin.height &&
+        fish.height + fish.y > penguin.y) {
+        fill(255, 255, 0);
+        
+        println("Collision");
+        text("COLLISION", 100, 50);
+    } else {
+      fill(255, 0, 255);
+      text("NO COLLISION", 100, 50);
+    }
+    
+    // Debug: Draw hitboxes
+    fish.draw();
+    penguin.draw();
+    rect(x, y, 23, 9);
+    rect(p.x - 25, p.y, 46, 60);
+    
+    return false;
   }
   
   // Render penguin
@@ -202,8 +228,8 @@ class Fish {
   boolean alive;
   
   Fish(){
-    x = random(0, windowWidth);
-    y = random(0, windowHeight);
+    x = random(margin, windowWidth - margin);
+    y = random(margin, windowHeight - margin);
     alive = true;
   }
   
@@ -248,3 +274,19 @@ class Quad {
   }
 }
 
+// Represents a rectangle
+class Rectangle {
+  float x, y;
+  float width, height;
+  
+  Rectangle(float x, float y, float width, float height){
+    x = x;
+    y = y;
+    width = width;
+    height = height;
+  }
+  
+  void draw(){
+    rect(x, y, width, height);
+  }
+}
