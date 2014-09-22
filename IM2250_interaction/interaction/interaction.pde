@@ -11,6 +11,9 @@ final float movementSpeed = 1.2;
 // Record score
 int score = 0;
 
+// Initial number of fish to start with
+int startFishCount = 3;
+
 // set margin for fish
 float margin = 20;
 
@@ -37,7 +40,7 @@ void setup (){
   // Create array of food (3 fish)
   fishies = new ArrayList<Fish>();
   
-  for (int i = 0; i < 4; i++){
+  for (int i = 0; i < startFishCount + 1; i++){
     fishies.add(new Fish());
   }
 }
@@ -85,17 +88,8 @@ void draw (){
   p.render();
 }
 
-// Are the 2 provided values within a certain range of each other?
-//   example: are 20 and 45 within '30' pixels -> TRUE
-//   example: are 20 and 45 within '10' pixels -> FALSE
-boolean withinRange(float x1, float x2, float discretion){
-  float difference = max(x1, x2) - min(x1, x2); 
-  return difference < discretion;
-}
-
+// Change penguin's direction
 void mouseClicked(){
-  
-  // Change penguin's direction
   p.changeDirection();
 }
  
@@ -154,29 +148,21 @@ class Penguin {
   
   boolean collide(float pX, float pY){
     Rectangle fish = new Rectangle(pX, pY, 23, 9);
-    Rectangle penguin = new Rectangle(p.x, p.y, 46, 60);
-   
+    Rectangle penguin = new Rectangle(p.x - 23, p.y, 46, 60);
+    
+    println("Penguin: " + penguin.x + " Fish: " + fish.x);
+    
+    penguin.draw();
     
     if (fish.x < penguin.x + penguin.width &&
         fish.x + fish.width > penguin.x &&
         fish.y < penguin.y + penguin.height &&
         fish.height + fish.y > penguin.y) {
-        fill(255, 255, 0);
-        
-        println("Collision");
-        text("COLLISION", 100, 50);
+
+        return true;
     } else {
-      fill(255, 0, 255);
-      text("NO COLLISION", 100, 50);
+        return false;
     }
-    
-    // Debug: Draw hitboxes
-    fish.draw();
-    penguin.draw();
-    rect(x, y, 23, 9);
-    rect(p.x - 25, p.y, 46, 60);
-    
-    return false;
   }
   
   // Render penguin
@@ -274,16 +260,16 @@ class Quad {
   }
 }
 
-// Represents a rectangle
+// Represents a rectangle, but better
 class Rectangle {
   float x, y;
   float width, height;
   
-  Rectangle(float x, float y, float width, float height){
-    x = x;
-    y = y;
-    width = width;
-    height = height;
+  Rectangle(float pX, float pY, float w, float h){
+    x = pX;
+    y = pY;
+    width = w;
+    height = h;
   }
   
   void draw(){
