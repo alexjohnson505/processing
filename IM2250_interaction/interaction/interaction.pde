@@ -14,8 +14,12 @@ int score = 0;
 // Define penguin in start position
 Penguin p = new Penguin(200, 200);
 
+// Definate food assets
+PImage fish;
+PImage food;
+
 // Array of food 
-Fish[] fishies = new Fish[3];
+ArrayList<Fish> fishies;
 
 // Initialize program
 void setup (){
@@ -23,12 +27,14 @@ void setup (){
   // Set size of preview window
   size(windowWidth, windowHeight);
   
-  int i = 2;
+  // Load images into global variables
+  fish = loadImage("fish.png");
+  food = loadImage("food.png");
   
   // Create array of food (3 fish)
-  while (i > -1){
-    fishies[i] = new Fish();
-    i--;
+  fishies = new ArrayList<Fish>();
+  for (int i = 0; i < 3; i++){
+    fishies.add(new Fish());
   }
 }
 
@@ -53,18 +59,22 @@ void draw (){
   }
   
    // Render Fish
-  for (int i = 0; i < 3; i++){
-    fishies[i].display();
+  for (int i = 0; i < fishies.size() - 1; i++){
+    Fish current = fishies.get(i);
+    
+    current.display();
     
     // Super basic collision detection
-    // TODO: Calculate based on objects, not basic proximity
-    if (withinRange(fishies[i].x, p.x, 15) && withinRange(fishies[i].y, p.y, 30)){
+    if (current.alive && withinRange(current.x, p.x, 15) && withinRange(current.y, p.y, 30)){
+      
+      // Kill fish
+      current.alive = false;
       
       // Increment score
       score++;
       
       // Add a new fish elsewhere
-      fishies[i] = new Fish();
+      fishies.add(new Fish());
     }
   }
   
@@ -91,12 +101,41 @@ class Penguin {
   float y;
   int direction;
   float speed;
+  Quad body;
+  Quad belly;
+  Quad beak;
   
   Penguin(float pX, float pY) {
     x = pX;
     y = pY;
     direction = 0;
     speed = movementSpeed;
+    
+    // Init vars
+    float[] a = {0, 0};
+    float[] b = {0, 0};
+    float[] c = {0, 0};
+    float[] d = {0, 0};
+
+    // BODY
+    a = new float[] {-15, 0};
+    b = new float[] {-15, 40};
+    c = new float[] {15, 40};
+    d = new float[] {15, 0};
+    body = new Quad(a, b, c, d);
+    
+    // BELLY
+    a = new float[] {-11, 18};
+    b = new float[] {-11, 40};
+    c = new float[] {5, 40};
+    d = new float[] {5, 18};
+    belly = new Quad(a, b, c, d);
+
+    a = new float[] {-3, 6};
+    b = new float[] {-3, 14};
+    c = new float[] {-25, 12};
+    d = new float[] {-25, 9};
+    beak = new Quad(a, b, c, d);
   }
   
   void changeDirection(){
@@ -108,6 +147,10 @@ class Penguin {
   void reverse(){
     direction = direction + 2;
     direction = direction % 4;
+  }
+  
+  void collide(float x, float y){
+    println(x + y);
   }
   
   // Render penguin
@@ -128,32 +171,7 @@ class Penguin {
     } else {
       y = y + 1 * speed;
     }
-    
-    // Init vars
-    float[] a = {0, 0};
-    float[] b = {0, 0};
-    float[] c = {0, 0};
-    float[] d = {0, 0};
-
-    // BODY
-    a = new float[] {-15, 0};
-    b = new float[] {-15, 40};
-    c = new float[] {15, 40};
-    d = new float[] {15, 0};
-    Quad body = new Quad(a, b, c, d);
-    
-    // BELLY
-    a = new float[] {-11, 18};
-    b = new float[] {-11, 40};
-    c = new float[] {5, 40};
-    d = new float[] {5, 18};
-    Quad belly = new Quad(a, b, c, d);
-
-    a = new float[] {-3, 6};
-    b = new float[] {-3, 14};
-    c = new float[] {-25, 12};
-    d = new float[] {-25, 9};
-    Quad beak = new Quad(a, b, c, d);
+   
     
     pushMatrix();
       translate(x, y);
@@ -181,22 +199,24 @@ class Penguin {
 class Fish {
   float x; // X Position
   float y; // Y Position
-  float w; // Width
-  float h; // Height
+  boolean alive;
   
   Fish(){
     x = random(0, windowWidth);
     y = random(0, windowHeight);
-    w = random(10, 60);
-    h = random(5, 20);
+    alive = true;
   }
   
   void display(){
-    pushMatrix();
-      noStroke();
-      fill(20, 200, 150);
-      rect(x, y, w, h);
-    popMatrix();
+    if (alive == true){
+      image(fish, x, y);
+    } else {
+      image(food, x, y);
+    }
+  }
+  
+  void kill(){
+    alive = false;
   }
 }
 
