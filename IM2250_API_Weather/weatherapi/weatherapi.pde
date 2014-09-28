@@ -29,15 +29,34 @@ int windowHeight = 450;
 
 // Setup Data
 void setup() {
+  
+  // GET data from API
   fetchData();
+  
+  // Init window
   size(windowWidth, windowHeight);
+  
+  // Light blue background
   background(240, 240, 255, .1);
+  
+  // Render graph once
   render();
 };
 
 // Render once
 void render () {
-  // Iterate through times
+  
+  // Provide KEY for graph
+  fill(124, 176, 204);
+  text("Humidity", 10, 20);
+  
+  fill(78, 110, 127);
+  text("Pressure", 10, 40);
+  
+  fill(40, 96, 127);
+  text("Temperature", 10, 60);
+  
+  // Iterate through objects
   for (int i = 0; i < data.size(); i++) {
     
     // Extract moment
@@ -58,19 +77,14 @@ void render () {
       translate(i * 30, 450);
       
       // Humidity
-      renderBar(humidity * -1, 0, color(124, 176, 204));
+      renderBar(humidity, 0, color(124, 176, 204));
   
       // Pressure
-      float pres = ((pressure - 900) * -1); 
-      renderBar(pres, 10, color(78, 110, 127));
+      renderBar(pressure - 900, 10, color(78, 110, 127));
     
       // Render temperature bars
-      fill(40, 96, 127);
-      rect(20, 0, 10, temperature * -5);
+      renderBar(temperature * 5, 20, color(40, 96, 127));
       
-      println("*******************************");
-
-      println(pressure);
      popMatrix();
      
   }
@@ -78,9 +92,9 @@ void render () {
 
 void renderBar(float value, int xOffset, color c){
   fill(c);
-  rect((float)xOffset, (float)0, 10, value);
+  rect((float)xOffset, (float)0, 10, value * -1);
   fill(0, 0, 0);
-  text(value, xOffset - 10, value);
+  text((int)value, xOffset - 10, value * -1);
   
 //  color, xOffset, value;
 }
