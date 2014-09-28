@@ -30,13 +30,27 @@ int windowHeight = 600;
 // Setup Data
 void setup() {
   fetchData();
-  size(windowWidth, windowHeight);  
+  size(windowWidth, windowHeight);
+  render();  
 };
 
-void draw() {
+// Render once
+void render () {
+  // Iterate through times
   for (int i = 0; i < data.size(); i++) {
+    
+    // Extract moment
+    JSONObject moment = data.getJSONObject(i);
+    
     println("*******************************");
-    println(data.getJSONObject(i));
+    
+    int k = moment.getInt("temp");
+    int temperature = (9 / 5) * ( k - 273) + 32;
+    println(temperature);
+    
+    rect(i * 22, 600, 10, temperature * -5);
+    
+    
   }
   
 //   for (int i = 0; i < data.size(); i++) {
@@ -50,6 +64,9 @@ void draw() {
 //  }
 
 };
+
+void draw() {
+}
 
 // Get data from API
 void fetchData(){
