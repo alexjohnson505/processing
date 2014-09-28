@@ -24,14 +24,15 @@ String stationID = "5091";
 JSONObject openWeatherMapData;
 JSONArray data;
 
-int windowWidth = 800;
-int windowHeight = 600;
+int windowWidth = 850;
+int windowHeight = 450;
 
 // Setup Data
 void setup() {
   fetchData();
   size(windowWidth, windowHeight);
-  render();  
+  background(240, 240, 255, .1);
+  render();
 };
 
 // Render once
@@ -41,29 +42,48 @@ void render () {
     
     // Extract moment
     JSONObject moment = data.getJSONObject(i);
+    JSONObject main = moment.getJSONObject("main");
     
-    println("*******************************");
+    // Extract data units
+    float humidity = moment.getFloat("humidity");
+    float pressure = moment.getFloat("pressure");
+    float temperature = (9 / 5) * (moment.getFloat("temp") - 273) + 32;
     
-    int k = moment.getInt("temp");
-    int temperature = (9 / 5) * ( k - 273) + 32;
-    println(temperature);
+    // 78, 110, 127 | 79, 192, 255 | 156, 220, 255 | 40, 96, 127 | 124, 176, 204
     
-    rect(i * 22, 600, 10, temperature * -5);
-    
-    
-  }
+    noStroke();
   
-//   for (int i = 0; i < data.size(); i++) {
-//    JSONArray day = data.getJSONObject(i);
-////    float temp = day.temp; 
-//    
-//    println("*******************************");
-//    println(temp);
-//    
-//    
-//  }
+    // Each day is 30px apart)
+    pushMatrix();
+      translate(i * 30, 450);
+      
+      // Humidity
+      renderBar(humidity * -1, 0, color(124, 176, 204));
+  
+      // Pressure
+      float pres = ((pressure - 900) * -1); 
+      renderBar(pres, 10, color(78, 110, 127));
+    
+      // Render temperature bars
+      fill(40, 96, 127);
+      rect(20, 0, 10, temperature * -5);
+      
+      println("*******************************");
 
+      println(pressure);
+     popMatrix();
+     
+  }
 };
+
+void renderBar(float value, int xOffset, color c){
+  fill(c);
+  rect((float)xOffset, (float)0, 10, value);
+  fill(0, 0, 0);
+  text(value, xOffset - 10, value);
+  
+//  color, xOffset, value;
+}
 
 void draw() {
 }
