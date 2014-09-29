@@ -61,12 +61,14 @@ void render () {
     
     // Extract moment
     JSONObject moment = data.getJSONObject(i);
-    JSONObject main = moment.getJSONObject("main");
+    JSONObject wind = moment.getJSONObject("wind");
+    
+    println(moment);
     
     // Extract data units
     float humidity = moment.getFloat("humidity");
-    float pressure = moment.getFloat("pressure");
-    float temperature = (9 / 5) * (moment.getFloat("temp") - 273) + 32;
+    float temperature = convertToF(moment.getFloat("temp"));
+    float windSpeed = wind.getFloat("speed");
     
     // 78, 110, 127 | 79, 192, 255 | 156, 220, 255 | 40, 96, 127 | 124, 176, 204
     
@@ -78,28 +80,48 @@ void render () {
       
       // Humidity
       renderBar(humidity, 0, color(124, 176, 204));
-  
-      // Pressure
-      renderBar(pressure - 900, 10, color(78, 110, 127));
     
       // Render temperature bars
-      renderBar(temperature * 5, 20, color(40, 96, 127));
+      renderBar(temperature * 5, 15, color(40, 96, 127));
+      
+      // Wind Speed
+      renderLine();
       
      popMatrix();
      
   }
 };
 
+// Render a point in a line plot.
+void renderLine(){
+}
+
+// Render a single bar in a line chart, given:
+//   (float) value = numeric value to render
+//   (int) xOffset = horizontal offset (x location to begin)
+//   (color) c = fill color
+
 void renderBar(float value, int xOffset, color c){
+  
+  // Render bar
   fill(c);
   rect((float)xOffset, (float)0, 10, value * -1);
+  
+  // Print value
   fill(0, 0, 0);
-  text((int)value, xOffset - 10, value * -1);
+  text((int)value, xOffset - 5, value * -1 - 8);
   
 //  color, xOffset, value;
 }
 
 void draw() {
+}
+
+// Convert float from Kelvin to Fehrenheit
+float convertToF(float i){
+  float x = (9 / 5) * (i - 273) + 32;
+  println(x); 
+  return  x;
 }
 
 // Get data from API
