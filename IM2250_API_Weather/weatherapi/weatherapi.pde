@@ -5,7 +5,10 @@
 /********************************************
   Visualize historical data from a specific 
   weather station. Render a graph based on
-  hourly weather metrics.
+  hourly weather metrics:
+   - Wind Speed
+   - Humidity
+   - Temperature
   
   Thanks to OpenWeatherMap.org and their public API 
   of historical and prediction weather data.
@@ -13,10 +16,8 @@
   Thanks to Richard Phung for his in-class demo.
  ********************************************/ 
 
-// Example URL:
-// http://api.openweathermap.org/data/2.5/history/station?id=5091&type=tick
-
 // API URL
+// example: http://api.openweathermap.org/data/2.5/history/station?id=5091&type=tick
 String baseURL = "http://api.openweathermap.org/data/2.5/";
 String stationID = "5091";
 
@@ -24,7 +25,7 @@ String stationID = "5091";
 JSONObject openWeatherMapData;
 JSONArray data;
 
-int windowWidth = 950;
+int windowWidth = 900;
 int windowHeight = 500;
 
 // Global vars for linking plot 
@@ -53,17 +54,16 @@ void render () {
   
   // Provide KEY for graph
   fill(40, 96, 127);
-  text("Temperature (F)", 10, 20);
+  text("Temperature (F)", 10, 60);
   
   fill(124, 176, 204);
   text("Humidity", 10, 40);
 
   fill(247, 163, 17);
-  text("Wind Speed (MPH)", 10, 60);
+  text("Wind Speed (MPH)", 10, 20);
   
   text("Historical Weather Data from Station #" + stationID, 580, 20);
   
- 
   // Iterate through objects
   for (int i = 0; i < data.size(); i++) {
     
@@ -78,11 +78,11 @@ void render () {
     
     noStroke();
   
-    // Each day is 30px apart)
     pushMatrix();
+      // Each hour is 30px apart
       translate(i * 30, windowHeight);
       
-      // Humidity
+      // Humidity bars
       renderBar(humidity, 0, color(124, 176, 204));
     
       // Render temperature bars
@@ -96,7 +96,9 @@ void render () {
   }
 };
 
-// Render a point in a line plot.
+// Render a line chart.
+// Given a (float) windSpeed, use the previously 
+// saved data to draw a line between the 2 points
 void renderLinePoint(float windSpeed){
   float scale = 30;
   float x = 0;
@@ -110,17 +112,23 @@ void renderLinePoint(float windSpeed){
     x = previousLineX + 30;
     y = windSpeed;
     
-    
     strokeWeight(3);
-      stroke(color(247, 163, 17));
-      line(previousLineX, previousLineY * scale, x, y * scale);
+    stroke(color(247, 163, 17));
+    line(previousLineX, fixY(previousLineY, scale), x, fixY(y, scale));
     noStroke();
     
-    text(y, x - 8, y * scale - 15);
+    // Format wind speed text to 1 decimal place precision
+    text(nf(y, 1, 1), x - 8, fixY(y, scale) - 15);
   }
  
   previousLineX = x;
   previousLineY = y;
+}
+
+// Invert Y axix, normalize as to use standard cartesian notation.
+float fixY(float i, float scale){
+  float verticalOffset = -300;
+  return windowHeight + verticalOffset - (i * scale);
 }
 
 // Render a single bar in a line chart, given:
@@ -129,7 +137,7 @@ void renderLinePoint(float windSpeed){
 //   (color) c = fill color
 
 void renderBar(float value, int xOffset, color c){
-  int scale = -4;
+  int scale = -3;
   
   // Render bar
   fill(c);
@@ -138,8 +146,7 @@ void renderBar(float value, int xOffset, color c){
   // Print value
   fill(0, 0, 0);
   text((int)value, xOffset - 5, value * scale - 8);
-  
-//  color, xOffset, value;
+ 
 }
 
 void draw() {
@@ -157,7 +164,7 @@ void fetchData(){
   String request = baseURL + "history/station?id=" + stationID + "&type=tick";
   
   // Debug info
-  // println("API (GET): " + request);
+  println("API (GET): " + request);
   
   // Combine array of strings
   String result = join(loadStrings(request), "");
