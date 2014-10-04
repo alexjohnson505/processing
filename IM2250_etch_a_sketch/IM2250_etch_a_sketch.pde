@@ -8,13 +8,19 @@
             
  Etch a Sketch is a User Interface element made
  in processing 2.0 to emulate the interactivity
- for an Etch a Sketch, the classic children's toy
+ of the classic children's toy.
+
+ This UI element attempts to emulate the interactivity
+ of an etch a sketch. Etch a Sketches are iteresting 
+ in the way they limit movement. Instead of a traditional
+ 2D movement scheme (up, down, left, right), each dial
+ represents a direction of movement (horizontal/vertical),
+ and spinning the dial represents the velocity. 
  
- Interact using the following keyboard keys:
- 
-  - Press 'A' to enable the left dial.
-  - Press 'D' to enable the right dial.
-  - Press 'W' or 'S' to move
+ Interact with this UI element using the following keys:
+  - Press 'A' to enable the left dial (horizontal movement)
+  - Press 'D' to enable the right dial (vertical movement)
+  - Press 'W' or 'S' to adjust velocity (forwards, backwards)
   
  **********************************************/
  
@@ -51,18 +57,15 @@ void keyReleased(){
 }
 
 // EtchASketch defines the UI element for emulating the classic
-// children's toy. Using keyboard keys, the user can move the cursor
-// and draw shapes. I've attempted to mimic the uique interface of an
-// etch a sketch. Etch a sketches are captivating due to the movement 
-// limitations the impose. I've emulated this through forcing the user
-// to navigate via the use of a.) toggling direction and b.) toggling 
-// movement. 
+// children's toy. Using keyboard keys, the user can move the 
+// point at which it draws lines.
 
 class EtchASketch {
   float x;   // position of the draw cursor
   float y;   // position of the draw cursor
-  float px;  // previous position of the draw cursor
-  float py;  // previous position of the draw cursor
+  
+  float width;  // width of screen;
+  float height; // height of screen;
   
   String direction;  // Current direction of movement
   float velocity;    // Set movement velocity
@@ -71,9 +74,14 @@ class EtchASketch {
   Knob rightKnob;    // Right Knob
    
   EtchASketch () {
+    
     // Define locations/directions of knobs
     leftKnob  = new Knob(offset, windowHeight - offset, "horizontal");
     rightKnob = new Knob(windowWidth - offset, windowHeight - offset, "vertical");
+    
+    // Define screen size
+    width = windowWidth - 100;
+    height = windowHeight - 150;
     
     // Define cursor (drawing) position
     x = windowWidth / 2;
@@ -85,26 +93,27 @@ class EtchASketch {
   }
   
   // Run prior to drawing. Initializes the 
-  // wrapper and the instructions
+  // wrapper and the instructional text
   void init(){
     
     // EtchASketch Background
     fill(200, 200, 200);
-    rect(50, 50, 500, 300);
+    rect(50, 50, width, height);
     
+    // Local vars for text positioning
     int xText = 100;
-    int yText = windowHeight - 75;
+    int yText = windowHeight - 65;
     
     textSize(18);
     fill(200, 202, 153);
     
-    text("Etch-a-Sketch Emulator using key presses", xText, yText);
-    text("Use 'A' and 'D' to toggle movement direction", xText, yText + 20);
-    text("Use 'W' and 'S' to move the cursor", xText, yText + 40);
+    text("Etch-a-Sketch Emulator", xText, yText);
+    text("Use 'A' and 'D' to toggle direction", xText, yText + 20);
+    text("Use 'W' and 'S' to move", xText, yText + 40);
   }
   
   // Responder to key events. Takes in a boolean
-  // representing wether or now a key is currently
+  // representing whether or not a key is currently
   // pressed down.
   void keyPress(boolean keyDown){
     
@@ -118,17 +127,23 @@ class EtchASketch {
       etchy.setDirection("vertical");
     }
     
-    // Set velcocity
+    // Set velcocity on key press
     if (keyDown){
+      
       // Forward velocity
       if (key == 'w'){
         velocity = 1;
+      
       // Backward velocity
-      }else if (key == 's'){
+      } else if (key == 's'){
         velocity = -1;
+        
+      // Don't move for other keys
       } else {
         velocity = 0;
       }
+    
+    // Disable velocity on key release
     } else {
       velocity = 0;
     }
@@ -144,6 +159,7 @@ class EtchASketch {
     if (direction == "horizontal"){
       float x2 = x + i;
       
+      // Check bounds
       if (withinBounds(x2, y)){
         x = x2;
       }
@@ -152,17 +168,17 @@ class EtchASketch {
     if (direction == "vertical"){
       float y2 = y + i;
       
+      // Check bounds
       if (withinBounds(x, y2)){
         y = y2;
       }
     }
     
-    
     stroke(255);
-
     fill(0, 0, 0);
-    ellipse(x, y, 10, 10); // Demo cursor
-    stroke(255);
+    
+    // Draw
+    ellipse(x, y, 10, 10);
     
     leftKnob.draw(direction);
     rightKnob.draw(direction);
@@ -170,19 +186,18 @@ class EtchASketch {
   
   void reset(){
     fill(200, 200, 200);
-    rect(50, 50, 500, 300); 
+    rect(50, 50, width, height); 
   }
   
+  // Ensure drawing cursor remains 
+  // within drawable area 
   boolean withinBounds(float x, float y){
-    float xMin = 50;
-    float xMax = 550;
-    float yMin = 50;
-    float yMax = 350;
-    println("x: " + x + " | y: " + y);
+    float lineWidth = 4;
+    float xMin = 0 + offset + lineWidth;
+    float xMax = width + offset - lineWidth;
+    float yMin = 0 + offset + lineWidth;
+    float yMax = height + offset - lineWidth;
     return x > xMin && x < xMax && y > yMin && y < yMax;
-    
-//    rect(50, 50, 500, 300);
-    
   }
 }
 
@@ -198,6 +213,8 @@ class Knob {
   }
   
   void draw(String currentKnob){
+    
+    // Provide UI feedback for active knob
     if (currentKnob == direction){
       fill(255, 255, 255);
     } else {
