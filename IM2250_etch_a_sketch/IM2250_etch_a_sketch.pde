@@ -1,10 +1,16 @@
 // Alex Johnson 10/6/15
 // IM 2250 - Programming for Digital Media
 // Assignment 04 - Processing 2 Exploration
-// Custom Widget
 
 /**********************************************
  Etch a Sketch
+ A UI element for emulating the interactivity
+ of the classic toy. 
+ 
+ Press 'A' to enable the left dial.
+ Press 'B' to enable the right dial.
+ 'Click and Drag' your mouse to emulate
+ the "turning" of your selected dial 
  **********************************************/
  
 final int windowWidth = 600;
@@ -17,10 +23,7 @@ EtchASketch etchy = new EtchASketch();
 void setup() {
   size(windowWidth, windowHeight);
   background(178, 34, 34);
-  
-  // EtchASketch Background
-  fill(200, 200, 200);
-  rect(50, 50, 500, 300);
+  etchy.init();
 }
 
 void draw() {
@@ -41,9 +44,8 @@ void keyReleased(){
   }
   
 }
-void mousePressed() {}
-void mouseReleased() {}
 
+// Listener for mouse drag
 void mouseDragged() {
   etchy.sketch();
 }
@@ -65,6 +67,11 @@ class EtchASketch {
     direction = "horizontal"; // Default
   }
   
+  void init(){
+      // EtchASketch Background
+    fill(200, 200, 200);
+    rect(50, 50, 500, 300);
+  }
   void setDirection(String d){
     direction = d;
   }
