@@ -10,6 +10,8 @@
 final int windowWidth = 600;
 final int windowHeight = 450;
 
+final float offset = 50;
+
 EtchASketch etchy = new EtchASketch();
 
 void setup() {
@@ -39,42 +41,43 @@ void keyReleased(){
   }
   
 }
-void mousePressed() {
-//  println(mouseX);
-//  println(mouseY);
-  
-  
-   
-}
+void mousePressed() {}
+void mouseReleased() {}
 
 void mouseDragged() {
-    etchy.x = mouseX; 
-    etchy.y = mouseY; 
-}
-
-void mouseReleased() {
-  
+  etchy.sketch();
 }
 
 class EtchASketch {
-  float x;  // center of the draw cursor
-  float y;  // center of the draw cursor
-  float px; // previous center of the draw cursor
-  float py; // previous center of the draw cursor
+  float x;   // center of the draw cursor
+  float y;   // center of the draw cursor
+  float px;  // previous center of the draw cursor
+  float py;  // previous center of the draw cursor
   Knob leftKnob;     // Left Knob
   Knob rightKnob;    // Right Knob
   String direction;  // Set direction of the last selected knob 
 
   EtchASketch () {
-    leftKnob  = new Knob(50, windowHeight - 50, "horizontal");
-    rightKnob = new Knob(windowWidth - 50, windowHeight - 50, "vertical");
+    leftKnob  = new Knob(offset, windowHeight - offset, "horizontal");
+    rightKnob = new Knob(windowWidth - offset, windowHeight - offset, "vertical");
     x = windowWidth / 2;
-    y = (windowHeight - 50) / 2;
-    direction = "horizontal";
+    y = (windowHeight - offset) / 2;
+    direction = "horizontal"; // Default
   }
   
   void setDirection(String d){
     direction = d;
+  }
+  
+  // Change path
+  void sketch(){
+    if (direction == "horizontal"){
+      etchy.x = mouseX; 
+    }
+    
+    if (direction == "vertical"){
+      etchy.y = mouseY; 
+    }
   }
 
   void draw() {
@@ -83,8 +86,8 @@ class EtchASketch {
     fill(0, 0, 0);
     ellipse(x, y, 10, 10); // Demo cursor
     
-    leftKnob.draw(currentKnob);
-    rightKnob.draw(currentKnob);
+    leftKnob.draw(direction);
+    rightKnob.draw(direction);
     
     text(direction, 10, 10);
 
