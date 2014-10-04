@@ -4,18 +4,13 @@
 // Custom Widget
 
 /**********************************************
- Toaster - A digital UI object for taking user
- input, and simulating a kitchen appliance
- through virtual representation. 
- 
- Goal: Create a Unique User Interface Object.
+ Etch a Sketch
  **********************************************/
-
+ 
 final int windowWidth = 600;
 final int windowHeight = 400;
 
-// Init new Toaster
-Toaster toaster = new Toaster();
+EtchASketch etchy = new EtchASketch();
 
 void setup() {
   size(windowWidth, windowHeight);
@@ -23,22 +18,17 @@ void setup() {
 }
 
 void draw() {
-
-  toaster.draw();
+  etchy.draw();
 }
 
 
-class Toaster {
+class EtchASketch {
   float x;
   float y;
-  int width;
-  int height;
 
-  Toaster() {
+  EtchASketch() {
     x = 350;
     y = 240;
-    width = 100;
-    height = 200;
   }
 
   void draw() {
